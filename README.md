@@ -192,6 +192,7 @@
         <img src="photo_6129476574517513374_y.jpg" alt="Photo 6">
       </div>
     </section>
+
     <footer>
       Made with ❤️ — a small page about someone special.
     </footer>
@@ -218,3 +219,4 @@
   </script>
 </body>
 </html>
+
