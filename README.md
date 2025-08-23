@@ -3,166 +3,183 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Top Up Diamonds - Game Portal</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>ST Shop Dimond</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      color: #000000;
+    }
+    header {
+      background: #000000;
+      color: rgb(209, 209, 209);
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background: rgb(249, 126, 126);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .card h2 {
+      margin-bottom: 15px;
+      color: #007bff;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    ul li {
+      padding: 8px;
+      margin: 6px 0;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #f9fafc;
+    }
+    
+    }
+    .order-box {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin: 10px 0 6px;
+    }
+    select, input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+    }
+    .result {
+      font-weight: bold;
+      color: green;
+      margin-top: 10px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #000000;
+    }
+  </style>
 </head>
 <body>
 
   <header>
-    <div class="navbar">
-      <h1>Game Portal</h1>
-      <nav>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Top Up</a></li>
-          <li><a href="#">Support</a></li>
-        </ul>
-      </nav>
-    </div>
+    ST Shop Dimond
   </header>
 
-  <section class="top-up-section">
-    <div class="content">
-      <h2>Top Up Diamonds</h2>
-      <p>Boost your in-game progress by topping up diamonds! Diamonds can be used to buy exclusive items, skins, and boosts.</p>
-      
-      <form id="topUpForm">
-        <label for="diamondAmount">Select Amount:</label>
-        <select id="diamondAmount" required>
-          <option value="100">100 Diamonds - $1</option>
-          <option value="250">250 Diamonds - $2.5</option>
-          <option value="500">500 Diamonds - $5</option>
-          <option value="1000">1000 Diamonds - $10</option>
-        </select>
-
-        <button type="submit">Top Up Now</button>
-      </form>
-
-      <div id="confirmationMessage" class="hidden">
-        <p>Your top up of <span id="amountValue"></span> diamonds was successful!</p>
-      </div>
+  <div class="container">
+    <!-- Mobile Legends -->
+    <div class="card">
+      <h2>Mobile Legends</h2>
+      <ul>
+        <li>$1 = 60 Diamonds</li>
+        <li>$2 = 120 Diamonds</li>
+        <li>$5 = 300 Diamonds</li>
+        <li>$10 = 560 Diamonds</li>
+        <li>$20 = 1200 Diamonds</li>
+        <li>$30 = 1800 Diamonds</li>
+        <li>$100 = 6000 Diamonds</li>
+      </ul>
     </div>
-  </section>
+
+    <!-- Free Fire -->
+    <div class="card">
+      <h2>Free Fire</h2>
+      <ul>
+        <li>$1 = 100 Diamonds</li>
+        <li>$2 = 200 Diamonds</li>
+        <li>$5 = 600 Diamonds</li>
+        <li>$10 = 1200 Diamonds</li>
+        <li>$20 = 2400 Diamonds</li>
+        <li>$30 = 3600 Diamonds</li>
+        <li>$100 = 12000 Diamonds</li>
+      </ul>
+    </div>
+
+   
+  <!-- Order Calculator -->
+  <div class="order-box">
+    <h2>Quick Order</h2>
+    <label for="game">Select Game:</label>
+    <select id="game">
+      <option value="ml">Mobile Legends</option>
+      <option value="ff">Free Fire</option>
+    </select>
+
+    <label for="amount">Select Amount (USD):</label>
+    <select id="amount"></select>
+
+    <label for="player">Player ID:</label>
+    <input type="text" id="player" placeholder="Enter your Player ID">
+
+    <button onclick="calculate()">Calculate Diamonds</button>
+    <div class="result" id="result">Please select options above.</div>
+  </div>
 
   <footer>
-    <p>&copy; 2025 Game Portal. All rights reserved.</p>
+    © 2025 ST Shop Dimond — Fast & Safe Top Up
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    const priceMap = {
+      ml: {1:60, 2:120, 5:300, 10:560, 20:1200, 30:1800, 100:6000},
+      ff: {1:100, 2:200, 5:600, 10:1200, 20:2400, 30:3600, 100:12000}
+    };
+
+    const gameSel = document.getElementById("game");
+    const amountSel = document.getElementById("amount");
+    const result = document.getElementById("result");
+
+    function loadAmounts() {
+      const game = gameSel.value;
+      const plans = priceMap[game];
+      amountSel.innerHTML = "";
+      for (let usd in plans) {
+        let opt = document.createElement("option");
+        opt.value = usd;
+        opt.textContent = `$${usd}`;
+        amountSel.appendChild(opt);
+      }
+    }
+
+    function calculate() {
+      const game = gameSel.value;
+      const usd = amountSel.value;
+      const diamonds = priceMap[game][usd];
+      const playerId = document.getElementById("player").value;
+      const gameName = game === "ml" ? "Mobile Legends" : "Free Fire";
+      result.textContent = `${gameName} → $${usd} = ${diamonds} Diamonds for Player ID: ${playerId}`;
+    }
+
+    gameSel.addEventListener("change", loadAmounts);
+    window.onload = loadAmounts;
+  </script>
+
 </body>
 </html>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  color: #333;
-}
-
-header {
-  background-color: #1d3557;
-  color: white;
-  padding: 10px 0;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-}
-
-.navbar h1 {
-  font-size: 1.8em;
-}
-
-nav ul {
-  list-style-type: none;
-}
-
-nav ul li {
-  display: inline;
-  margin-left: 20px;
-}
-
-nav ul li a {
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-}
-
-.top-up-section {
-  padding: 50px 20px;
-  text-align: center;
-}
-
-.top-up-section .content {
-  max-width: 600px;
-  margin: 0 auto;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-  margin-bottom: 20px;
-}
-
-label {
-  font-size: 1.2em;
-  margin-bottom: 10px;
-  display: block;
-}
-
-select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  font-size: 1em;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button {
-  background-color: #1d3557;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  font-size: 1em;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-button:hover {
-  background-color: #457b9d;
-}
-
-.hidden {
-  display: none;
-}
-
-footer {
-  background-color: #333;
-  color: white;
-  text-align: center;
-  padding: 20px;
-}
-document.getElementById("topUpForm").addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent form from submitting
-
-  const diamondAmount = document.getElementById("diamondAmount").value;
-  const confirmationMessage = document.getElementById("confirmationMessage");
-  const amountValue = document.getElementById("amountValue");
-
-  // Set the amount in the confirmation message
-  amountValue.textContent = diamondAmount;
-
-  // Show the confirmation message
-  confirmationMessage.classList.remove("hidden");
-});
